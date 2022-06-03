@@ -85,6 +85,16 @@ function startPrompt() {
                 name: "name",
                 message: "What is the new employees name?"
             },
+            {
+                type: "input",
+                name: "id",
+                message: "What is the Identification number of the new employee?"
+            },
+            {
+                type: "input",
+                name: "email",
+                message: "What is the new employees email address?"
+            },
             // Asking for the special parameters for each of the different roles
             {
                 type: "input",
