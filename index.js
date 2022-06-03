@@ -33,6 +33,7 @@ team.engineer = [];
 team.intern = [];
 
 function startPrompt() {
+    // Getting Manager Information
     inquirer.prompt([
         {
             type: "input",
@@ -54,18 +55,21 @@ function startPrompt() {
             name: "officeNum",
             message: "What is your office number?"
         }
+        // Pushing the data of the manager to the team array
     ]).then(data => {
         this.manager = new Manager(data.name, data.id, data.email, data.officeNum)
         team.manager.push(this.manager)
         return team
     }).then(
         inquirer.prompt([
+            // Prompting to add more employees
             {
                 type: "confirm",
                 name: "newEmployeeConfirm",
                 message: "Would you like to Add a new employee?",
                 default: true
             },
+            // If the user selected to add a new employee it asks what the role of the new employee will be
             {
                 type: "list",
                 message: "Select the role of the new Employee",
@@ -75,10 +79,22 @@ function startPrompt() {
                 ],
                 when: ({ newEmployeeConfirm }) => newEmployeeConfirm
             },
+            // Asking the constant new employee parameters
+            {
+                type: "input",
+                name: "name",
+                message: "What is the new employees name?"
+            },
+            // Asking for the special parameters for each of the different roles
             {
                 type: "input",
                 message: "What is the Interns School?",
                 when: ({ intern }) => intern
+            },
+            {
+                type: "input",
+                message: "What is the engineers Github Username?",
+                when: ({ Engineer }) => Engineer
             }
         ])
     )
