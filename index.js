@@ -59,54 +59,60 @@ function startPrompt() {
     ]).then(data => {
         this.manager = new Manager(data.name, data.id, data.email, data.officeNum)
         team.manager.push(this.manager)
+        employeePrompts();
         return team
-    }).then(
-        inquirer.prompt([
-            // Prompting to add more employees
-            {
-                type: "confirm",
-                name: "newEmployeeConfirm",
-                message: "Would you like to Add a new employee?",
-                default: true
-            },
-            // If the user selected to add a new employee it asks what the role of the new employee will be
-            {
-                type: "list",
-                message: "Select the role of the new Employee",
-                choices: [
-                    "Intern",
-                    "Engineer",
-                ],
-                when: ({ newEmployeeConfirm }) => newEmployeeConfirm
-            },
-            // Asking the constant new employee parameters
-            {
-                type: "input",
-                name: "name",
-                message: "What is the new employees name?"
-            },
-            {
-                type: "input",
-                name: "id",
-                message: "What is the Identification number of the new employee?"
-            },
-            {
-                type: "input",
-                name: "email",
-                message: "What is the new employees email address?"
-            },
-            // Asking for the special parameters for each of the different roles
-            {
-                type: "input",
-                message: "What is the Interns School?",
-                when: ({ intern }) => intern
-            },
-            {
-                type: "input",
-                message: "What is the engineers Github Username?",
-                when: ({ Engineer }) => Engineer
-            }
-        ])
-    )
+    });
 }
+function employeePrompts () {
+    inquirer.prompt([
+        // Prompting to add more employees
+        {
+            type: "confirm",
+            name: "newEmployeeConfirm",
+            message: "Would you like to Add a new employee?",
+            default: true
+        },
+        // If the user selected to add a new employee it asks what the role of the new employee will be
+        {
+            type: "list",
+            name: "role",
+            message: "Select the role of the new Employee",
+            choices: [
+                "Intern",
+                "Engineer",
+            ],
+            when: ({ newEmployeeConfirm }) => newEmployeeConfirm
+        },
+        // Asking the constant new employee parameters
+        {
+            type: "input",
+            name: "name",
+            message: "What is the new employees name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is the Identification number of the new employee?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is the new employees email address?"
+        },
+        // Asking for the special parameters for each of the different roles
+        {
+            type: "input",
+            name: "school",
+            message: "What is the Interns School?",
+            when: ({ role }) => "intern"
+        },
+        {
+            type: "input",
+            name: "github",
+            message: "What is the engineers Github Username?",
+            when: ({ role }) => "Engineer"
+        }
+    ])
+}
+
 startPrompt();
