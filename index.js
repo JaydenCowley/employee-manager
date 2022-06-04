@@ -27,92 +27,127 @@ const inquirer = require("inquirer")
 const Engineer = require("./lib/Engineer");
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
+const fs = require("fs")
+const outputDir = path.resolve(__dirname, "dist")
+const outputPath = path.join(outputDir, "team.html")
 var team = [];
-team.manager = [];
-team.engineer = [];
-team.intern = [];
+
 
 function startPrompt() {
     // Getting Manager Information
+    function createManager (){
     inquirer.prompt([
         {
             type: "input",
-            name: "name",
-            message: "What is your name?"
+            name: "managerName",
+            message: "What is your manager name?"
         },
         {
             type: "input",
-            name: "id",
+            name: "managerId",
             message: "What is your ID number?"
         },
         {
             type: "input",
-            name: "email",
+            name: "managerEmail",
             message: "What is your email?"
         },
         {
             type: "input",
-            name: "officeNum",
+            name: "managerOfficeNum",
             message: "What is your office number?"
         }
         // Pushing the data of the manager to the team array
     ]).then(data => {
-        this.manager = new Manager(data.name, data.id, data.email, data.officeNum)
-        team.manager.push(this.manager)
-        employeePrompts();
-        return team
+        const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOfficeNum)
+        team.push(manager)
+        createTeam();
     });
 }
-function employeePrompts () {
+function createTeam() {
     inquirer.prompt([
-        // Prompting to add more employees
-        {
-            type: "confirm",
-            name: "newEmployeeConfirm",
-            message: "Would you like to Add a new employee?",
-            default: true
-        },
-        // If the user selected to add a new employee it asks what the role of the new employee will be
         {
             type: "list",
-            name: "role",
-            message: "Select the role of the new Employee",
+            name: "memberChoice",
+            message: "What is the role of your team member?",
             choices: [
-                "Intern",
                 "Engineer",
-            ],
-            when: ({ newEmployeeConfirm }) => newEmployeeConfirm
-        },
-        // Asking the constant new employee parameters
+                "Intern",
+                "End"
+            ]
+        }
+    ]).then(userChoice => {
+        switch (userChoice.memberChoice){
+            case "Engineer":
+                createEngineer();
+                break;
+            case "Intern":
+                createIntern();
+                break;
+            default: buildTeam();
+        }
+    })
+} 
+function createEngineer(){
+    inquirer.prompt([
         {
             type: "input",
-            name: "name",
+            name: "engineerName",
             message: "What is the new employees name?"
         },
         {
             type: "input",
-            name: "id",
+            name: "engineerId",
             message: "What is the Identification number of the new employee?"
         },
         {
             type: "input",
-            name: "email",
+            name: "engineerEmail",
             message: "What is the new employees email address?"
         },
         // Asking for the special parameters for each of the different roles
         {
             type: "input",
-            name: "school",
-            message: "What is the Interns School?",
-            when: ({ role }) => "intern"
+            name: "engineerGithub",
+            message: "What is the engineers Github Username?",
+        }
+    ]).then(data => {
+        const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerOfficeNum)
+        team.push(engineer)
+        createTeam();
+    });
+}
+function createIntern(){
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "internName",
+            message: "What is the new employees name?"
         },
         {
             type: "input",
-            name: "github",
-            message: "What is the engineers Github Username?",
-            when: ({ role }) => "Engineer"
+            name: "internId",
+            message: "What is the Identification number of the new employee?"
+        },
+        {
+            type: "input",
+            name: "internEmail",
+            message: "What is the new employees email address?"
+        },
+        // Asking for the special parameters for each of the different roles
+        {
+            type: "input",
+            name: "internGithub",
+            message: "What is the interns Github Username?",
         }
-    ])
+    ]).then(data => {
+        const intern = new Intern(data.internName, data.internId, data.internEmail, data.internOfficeNum)
+        team.push(intern)
+        createTeam();
+    });
 }
+function buildHTML() {
 
+}
+}
 startPrompt();
