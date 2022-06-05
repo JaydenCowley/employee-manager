@@ -27,127 +27,135 @@ const inquirer = require("inquirer")
 const Engineer = require("./lib/Engineer");
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
+const path = require("path")
 const fs = require("fs")
 const outputDir = path.resolve(__dirname, "dist")
 const outputPath = path.join(outputDir, "team.html")
+const template = require("./src/template.js")
 var team = [];
 
 
 function startPrompt() {
     // Getting Manager Information
-    function createManager (){
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "managerName",
-            message: "What is your manager name?"
-        },
-        {
-            type: "input",
-            name: "managerId",
-            message: "What is your ID number?"
-        },
-        {
-            type: "input",
-            name: "managerEmail",
-            message: "What is your email?"
-        },
-        {
-            type: "input",
-            name: "managerOfficeNum",
-            message: "What is your office number?"
+    function createManager() {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "managerName",
+                message: "What is your manager name?"
+            },
+            {
+                type: "input",
+                name: "managerId",
+                message: "What is your ID number?"
+            },
+            {
+                type: "input",
+                name: "managerEmail",
+                message: "What is your email?"
+            },
+            {
+                type: "input",
+                name: "managerOfficeNum",
+                message: "What is your office number?"
+            }
+            // Pushing the data of the manager to the team array
+        ]).then(data => {
+            const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOfficeNum)
+            team.push(manager)
+            createTeam();
+        });
+    }
+    function createTeam() {
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "memberChoice",
+                message: "What is the role of your team member?",
+                choices: [
+                    "Engineer",
+                    "Intern",
+                    "End"
+                ]
+            }
+        ]).then(userChoice => {
+            switch (userChoice.memberChoice) {
+                case "Engineer":
+                    createEngineer();
+                    break;
+                case "Intern":
+                    createIntern();
+                    break;
+                default: buildHTML();
+            }
+        })
+    }
+    function createEngineer() {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "engineerName",
+                message: "What is the new employees name?"
+            },
+            {
+                type: "input",
+                name: "engineerId",
+                message: "What is the Identification number of the new employee?"
+            },
+            {
+                type: "input",
+                name: "engineerEmail",
+                message: "What is the new employees email address?"
+            },
+            // Asking for the special parameters for each of the different roles
+            {
+                type: "input",
+                name: "engineerGithub",
+                message: "What is the engineers Github Username?",
+            }
+        ]).then(data => {
+            const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerOfficeNum)
+            team.push(engineer)
+            createTeam();
+        });
+    }
+    function createIntern() {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "internName",
+                message: "What is the new employees name?"
+            },
+            {
+                type: "input",
+                name: "internId",
+                message: "What is the Identification number of the new employee?"
+            },
+            {
+                type: "input",
+                name: "internEmail",
+                message: "What is the new employees email address?"
+            },
+            // Asking for the special parameters for each of the different roles
+            {
+                type: "input",
+                name: "internSchool",
+                message: "What is the interns Github Username?",
+            }
+        ]).then(data => {
+            const intern = new Intern(data.internName, data.internId, data.internEmail, data.internOfficeNum)
+            team.push(intern)
+            console.log(team);
+            createTeam();
+        });
+    }
+    function buildHTML() {
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir)
         }
-        // Pushing the data of the manager to the team array
-    ]).then(data => {
-        const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOfficeNum)
-        team.push(manager)
-        createTeam();
-    });
-}
-function createTeam() {
-    inquirer.prompt([
-        {
-            type: "list",
-            name: "memberChoice",
-            message: "What is the role of your team member?",
-            choices: [
-                "Engineer",
-                "Intern",
-                "End"
-            ]
-        }
-    ]).then(userChoice => {
-        switch (userChoice.memberChoice){
-            case "Engineer":
-                createEngineer();
-                break;
-            case "Intern":
-                createIntern();
-                break;
-            default: buildTeam();
-        }
-    })
-} 
-function createEngineer(){
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "engineerName",
-            message: "What is the new employees name?"
-        },
-        {
-            type: "input",
-            name: "engineerId",
-            message: "What is the Identification number of the new employee?"
-        },
-        {
-            type: "input",
-            name: "engineerEmail",
-            message: "What is the new employees email address?"
-        },
-        // Asking for the special parameters for each of the different roles
-        {
-            type: "input",
-            name: "engineerGithub",
-            message: "What is the engineers Github Username?",
-        }
-    ]).then(data => {
-        const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerOfficeNum)
-        team.push(engineer)
-        createTeam();
-    });
-}
-function createIntern(){
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "internName",
-            message: "What is the new employees name?"
-        },
-        {
-            type: "input",
-            name: "internId",
-            message: "What is the Identification number of the new employee?"
-        },
-        {
-            type: "input",
-            name: "internEmail",
-            message: "What is the new employees email address?"
-        },
-        // Asking for the special parameters for each of the different roles
-        {
-            type: "input",
-            name: "internGithub",
-            message: "What is the interns Github Username?",
-        }
-    ]).then(data => {
-        const intern = new Intern(data.internName, data.internId, data.internEmail, data.internOfficeNum)
-        team.push(intern)
-        createTeam();
-    });
-}
-function buildHTML() {
-
-}
+        fs.writeFileSync(outputPath, template(team), "utf-8")
+    }
+    createManager();
 }
 startPrompt();
+module.exports = team;
