@@ -26,11 +26,38 @@ team.forEach(employee => {
     }
 });
 function generateManager(team) {
-    return ``
+    return `<!-- Manager Card -->
+    <article>
+        <header>
+            ${team.managerName} <br>
+            Manager
+        </header>
+        ID: ${team.managerId} <br>
+        EMAIL: ${team.managerEmail} <br>
+        Office Number: ${team.managerOfficeNum}
+    </article>`
 }
  function generateEngineer(team) {
-    return ``
+    return `<!-- Engineer Card -->
+    <article>
+        <header>
+            ${team.engineerName} <br>
+            Engineer
+        </header>
+        ID: ${team.engineerId} <br>
+        EMAIL: ${team.engineerEmail} <br>
+        Office Number: ${team.engineerGithub}
+    </article>`
 }
  function generateIntern(team) {
-    return ``
+    return `<!-- Intern Card -->
+    <article>
+        <header>
+            ${team.internName} <br>
+            Intern
+        </header>
+        ID: ${team.internId} <br>
+        EMAIL: ${team.internEmail} <br>
+        Office Number: ${team.internSchool}
+    </article>`
 }
