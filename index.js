@@ -31,7 +31,8 @@ const path = require("path")
 const fs = require("fs")
 const outputDir = path.resolve(__dirname, "dist")
 const outputPath = path.join(outputDir, "team.html")
-const template = require("./src/template.js")
+const template = require("./src/template.js");
+const html = require("./src/template.js");
 var team = [];
 
 
@@ -153,7 +154,7 @@ function startPrompt() {
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir)
         }
-        fs.writeFileSync(outputPath, template(team), "utf-8")
+        fs.writeFileSync(outputPath, html, "utf-8")
     }
     createManager();
 }
