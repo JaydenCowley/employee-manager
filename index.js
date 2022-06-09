@@ -115,7 +115,7 @@ function startPrompt() {
                 message: "What is the engineers Github Username?",
             }
         ]).then(data => {
-            const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerOfficeNum)
+            const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerGithub)
             team.push(engineer)
             createTeam();
         });
@@ -141,10 +141,10 @@ function startPrompt() {
             {
                 type: "input",
                 name: "internSchool",
-                message: "What is the interns Github Username?",
+                message: "What is the interns school?",
             }
         ]).then(data => {
-            const intern = new Intern(data.internName, data.internId, data.internEmail, data.internOfficeNum)
+            const intern = new Intern(data.internName, data.internId, data.internEmail, data.internSchool)
             team.push(intern)
             console.log(team);
             createTeam();
@@ -154,7 +154,8 @@ function startPrompt() {
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir)
         }
-        fs.writeFileSync(outputPath, html, "utf-8")
+        generate(team)
+        fs.writeFileSync(outputPath, 'template.js', "utf-8")
     }
     createManager();
 }

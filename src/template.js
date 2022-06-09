@@ -14,7 +14,7 @@ const team = require("../index.js");
 const Employee = require("../lib/Employee");
 
 // generateCards(team);
-const html = [];
+
 
 function generateManager(team) {
     return `<!-- Manager Card -->
@@ -52,8 +52,9 @@ function generateIntern(team) {
     Office Number: ${team.internSchool}
     </article>`
 }
-function generateHTMLTemplate (team) {
-    `<!DOCTYPE html>
+function generateHTMLTemplate () {
+    
+    let html = (`<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -63,21 +64,36 @@ function generateHTMLTemplate (team) {
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
     <title>Document</title>
     </head>
-    
+    ${function generate(team) {
+    for (i = 0; i < team.length; i++) {
+        if ([i].getRole() === "Manager") {
+            html.push(generateManager(team));
+        }else if ([i].getRole() === "Engineer") {
+            html.push(generateEngineer(team));
+        }else if ([i].getRole() === "Intern") {
+            html.push(generateIntern(team))
+        }
+        return html;
+    };
+    }
+}
+
     <body>
     <main class="container">
     </main>
     </body>
     
-    </html>`
+    </html>`)
 }
-team.forEach(team => {
-    if (team.getRole() === "Manager") {
-        html.push(generateManager(team));
-    }else if (team.getRole() === "Engineer") {
-        html.push(generateEngineer(team));
-    }else if (team.getRole() === "Intern") {
-        html.push(generateIntern(team))
-    }
-});
-module.exports = html;
+generateHTMLTemplate();
+// team.forEach(employee => {
+//     if (employee.getRole() === "Manager") {
+//         html.push(generateManager(team));
+//     }else if (employee.getRole() === "Engineer") {
+//         html.push(generateEngineer(team));
+//     }else if (employee.getRole() === "Intern") {
+//         html.push(generateIntern(team))
+//     }
+// });
+
+module.exports = generateHTMLTemplate();
