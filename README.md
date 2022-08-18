@@ -26,8 +26,13 @@ THEN I am prompted to enter the intern’s name, ID, email, and school, and I am
 WHEN I decide to finish building my team
 THEN I exit the application, and the HTML is generated
 
+## ScreenShot
+![image](https://user-images.githubusercontent.com/98612225/185480415-110a65a3-83b6-4b2a-a228-af99e411329f.png)
+
+
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://jaydencowley.github.io/Portfolio/)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jayden-cowley-5b5429230/)
+[Walkthrough Video](https://drive.google.com/file/d/1jB9A-9NysRbdBH3xkVuskMpfCKCYsPLt/view_)
 
 
