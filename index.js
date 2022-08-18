@@ -27,14 +27,18 @@ const inquirer = require("inquirer")
 const Engineer = require("./lib/Engineer");
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
-const path = require("path")
+// const path = require("path")
 const fs = require("fs")
-const outputDir = path.resolve(__dirname, "dist")
-const outputPath = path.join(outputDir, "team.html")
+// const outputDir = path.resolve(__dirname, "dist")
+// const outputPath = path.join(outputDir, "team.html")
 const template = require("./src/template.js");
-const html = require("./src/template.js");
-var team = [];
+const writeFile = require('./src/generate.js');
+const generateHTMLTemplate = require('./src/template')
 
+var team = [];
+team.manager = [];//duplicate for inter and engineer
+team.intern = [];
+team.engineer = [];
 
 function startPrompt() {
     // Getting Manager Information
@@ -42,32 +46,34 @@ function startPrompt() {
         inquirer.prompt([
             {
                 type: "input",
-                name: "managerName",
+                name: "name",
                 message: "What is your manager name?"
             },
             {
                 type: "input",
-                name: "managerId",
+                name: "id",
                 message: "What is your ID number?"
             },
             {
                 type: "input",
-                name: "managerEmail",
+                name: "email",
                 message: "What is your email?"
             },
             {
                 type: "input",
-                name: "managerOfficeNum",
+                name: "officeNum",
                 message: "What is your office number?"
             }
             // Pushing the data of the manager to the team array
         ]).then(data => {
-            const manager = new Manager(data.managerName, data.managerId, data.managerEmail, data.managerOfficeNum)
-            team.push(manager)
+            this.manager = new Manager(data.name, data.id, data.email, data.officeNum)
+            this.manager.getRole
+            team.manager.push(this.manager)
             createTeam();
+           return team;
         });
     }
-    function createTeam() {
+    function createTeam(teamData) {
         inquirer.prompt([
             {
                 type: "list",
@@ -82,82 +88,84 @@ function startPrompt() {
         ]).then(userChoice => {
             switch (userChoice.memberChoice) {
                 case "Engineer":
-                    createEngineer();
+                    createEngineer(teamData);
                     break;
                 case "Intern":
-                    createIntern();
+                    createIntern(teamData);
                     break;
-                default: buildHTML();
+                default: buildHTML(team);
             }
         })
     }
-    function createEngineer() {
+    function createEngineer(teamData) {
         inquirer.prompt([
             {
                 type: "input",
-                name: "engineerName",
+                name: "name",
                 message: "What is the new employees name?"
             },
             {
                 type: "input",
-                name: "engineerId",
+                name: "id",
                 message: "What is the Identification number of the new employee?"
             },
             {
                 type: "input",
-                name: "engineerEmail",
+                name: "email",
                 message: "What is the new employees email address?"
             },
             // Asking for the special parameters for each of the different roles
             {
                 type: "input",
-                name: "engineerGithub",
+                name: "github",
                 message: "What is the engineers Github Username?",
             }
         ]).then(data => {
-            const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.engineerGithub)
-            team.push(engineer)
+            this.engineer = new Engineer(data.name, data.id, data.email, data.github)
+            this.engineer.getRole
+            team.engineer.push(this.engineer)
             createTeam();
         });
     }
-    function createIntern() {
+    function createIntern(teamData) {
         inquirer.prompt([
             {
                 type: "input",
-                name: "internName",
+                name: "name",
                 message: "What is the new employees name?"
             },
             {
                 type: "input",
-                name: "internId",
+                name: "id",
                 message: "What is the Identification number of the new employee?"
             },
             {
                 type: "input",
-                name: "internEmail",
+                name: "email",
                 message: "What is the new employees email address?"
             },
             // Asking for the special parameters for each of the different roles
             {
                 type: "input",
-                name: "internSchool",
+                name: "school",
                 message: "What is the interns school?",
             }
         ]).then(data => {
-            const intern = new Intern(data.internName, data.internId, data.internEmail, data.internSchool)
-            team.push(intern)
+            this.intern = new Intern(data.name, data.id, data.email, data.school)
+            this.intern.getRole
+            team.intern.push(this.intern)
             console.log(team);
             createTeam();
         });
     }
-    function buildHTML() {
-        if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir)
-        }
-        generate(team)
-        fs.writeFileSync(outputPath, 'template.js', "utf-8")
+    function buildHTML(team) {
+        console.log(team)
+        let htmlData = generateHTMLTemplate(team)
+        // generate(team)
+        fs.writeFile("generatedHTML.html", htmlData, (err) => {
+            if (err) throw err
+        })
     }
     createManager();
 }
 startPrompt();
-module.exports = team;
