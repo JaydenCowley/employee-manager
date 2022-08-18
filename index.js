@@ -130,12 +130,12 @@ function startPrompt() {
             this.intern = new Intern(data.name, data.id, data.email, data.school)
             this.intern.getRole
             team.intern.push(this.intern)
-            console.log(team);
+            // console.log(team);
             createTeam();
         });
     }
     function buildHTML(team) {
-        console.log(team)
+        
         let htmlData = generateHTMLTemplate(team)
         // generate(team)
         fs.writeFile("generatedHTML.html", htmlData, (err) => {

@@ -1,13 +1,15 @@
 function managerSection(data) {
+  // console.log(data)
   return `
   <article>
   <header>
-  ROLE: ${data.role} <br>
-  ${data.name} <br>
+  <h2>${manager.name}</h2>
+  ROLE: ${manager.role} <br>
+  ${manager.name} <br>
   </header>
-  ID: ${data.id} <br>
-  EMAIL: ${data.email} <br>
-  Office Number: ${data.officeNum}
+  ID: ${manager.id} <br>
+  EMAIL: ${manager.email} <br>
+  Office Number: ${manager.officeNum}
   </article>
   `;
 }
@@ -15,13 +17,13 @@ function engineerSection(data) {
  return `
   <article>
       <header>
-      ROLE: ${data.role} <br>
-      ${data.name} <br>
-      Engineer
+      <h2>${engineer.name}</h2>
+      ROLE: ${engineer.role} <br>
+      ${engineer.name} <br>
       </header>
-      ID: ${data.id} <br>
-      EMAIL: ${data.email} <br>
-      GITHUB: ${data.github}
+      ID: ${engineer.id} <br>
+      EMAIL: ${engineer.email} <br>
+      GITHUB: ${engineer.github}
       </article>
   `
 }
@@ -29,13 +31,13 @@ function internSection(data) {
   return `
   <article>
       <header>
-      ROLE: ${data.role} <br>
-      ${data.name} <br>
-      Engineer
+      <h2>${intern.name}</h2>
+      ROLE: ${intern.role} <br>
+      ${intern.name} <br>
       </header>
-      ID: ${data.id} <br>
-      EMAIL: ${data.email} <br>
-      SCHOOL: ${data.school}
+      ID: ${intern.id} <br>
+      EMAIL: ${intern.email} <br>
+      SCHOOL: ${intern.school}
       </article>
   `
 }
